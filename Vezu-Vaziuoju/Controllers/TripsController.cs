@@ -147,6 +147,12 @@ namespace Vezu_Vaziuoju.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Progress(int id)
+        {
+            Trip trip = db.Trips.Find(id);
+            return View(trip);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

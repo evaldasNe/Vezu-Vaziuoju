@@ -1,0 +1,74 @@
+﻿@model Vezu_Vaziuoju.Trip
+
+@{
+    ViewBag.Title = "Progress";
+}
+
+<style>
+	#map {
+        height:400px;
+        width:400px;
+	}
+</style>
+
+<h2>Progress</h2>
+
+<div class="row">
+	<div id="map"></div>
+	<div>
+		@Html.DisplayNameFor(Model => Model.Post.AddressTo):
+	</div>
+	<div id="dest">
+		@Html.DisplayFor(Model => Model.Post.AddressTo)
+	</div>
+	<script>
+		var map;
+		function initMap() {
+			navigator.geolocation.getCurrentPosition(initMap2);
+		}
+		function initMap2(position) {
+			var crd = position.coords;
+			var myLatitude = crd.latitude;
+			var myLongitude = crd.longitude;
+			map = new google.maps.Map(document.getElementById('map'), {
+				center: { lat: myLatitude, lng: myLongitude },
+				zoom: 8
+			});
+			var currentPosition = {
+				lat: myLatitude,
+				lng: myLongitude
+			};
+			var currentMarker = new google.maps.Marker({
+				position: currentPosition,
+				label: 'Mes',
+				map: map
+			});
+			//document.getElementById("test").innerHTML = myLatitude;
+			geocodeAddress(map);
+			//var destination = { lat: -25.363, lng: 131.044 };
+			//var marker = new google.maps.Marker({
+			//	position: destination,
+			//	map: map,
+			//	title: 'Hello World!'
+			//});
+		}
+		function geocodeAddress(resultsMap) {
+			var geocoder = new google.maps.Geocoder();
+			var address = document.getElementById("dest").innerHTML;
+			geocoder.geocode({ 'address': address }, function (results, status) { //<<<INSERT ADDRESS
+          if (status === 'OK') {
+            //resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+			  title: 'Keliones tikslas'
+            });
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+      }
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoZsUgDloa-ME0vx7_hvk8l6WTvjoKccA&callback=initMap"
+			async defer></script>
+</div>
