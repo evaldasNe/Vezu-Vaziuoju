@@ -133,5 +133,49 @@ namespace Vezu_Vaziuoju.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // GET: Posts/BuyTicket/5
+        public ActionResult BuyTicket(int id)
+        {
+            Post post = db.Posts.Find(id);
+            if (post == null)
+            {
+                return HttpNotFound();
+            } else if (post.AvailableSeats <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(post);
+        }
+
+        // POST: Posts/BuyTicketPost/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuyTicketPost(int id)
+        {
+            Post post = db.Posts.Find(id);
+            var userId = db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id;
+
+            if (ModelState.IsValid)
+            {
+                Ticket ticket = new Ticket
+                {
+                    Id = int.Parse(id.ToString() + post.AvailableSeats.ToString()),
+                    Price = post.TicketPrice,
+                    ValidTill = DateTime.Now.AddHours(5),
+                    IsUsed = false,
+                    PassengerId = userId,
+                    PostId = post.Id,
+                };
+                db.Tickets.Add(ticket);
+                post.AvailableSeats--;
+                db.Entry(post).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            
+            return RedirectToAction("BuyTicket", new { id = id});
+        }
     }
 }
