@@ -2,6 +2,7 @@ namespace Vezu_Vaziuoju
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -22,13 +23,17 @@ namespace Vezu_Vaziuoju
 
         [Required]
         [StringLength(255)]
+        [DisplayName("Departure Address")]
         public string AddressFrom { get; set; }
 
         [Required]
         [StringLength(255)]
+        [DisplayName("Destination Address")]
         public string AddressTo { get; set; }
 
         [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
+        [DisplayName("Departure Time")]
         public DateTime StartTime { get; set; }
 
         public int TotalSeats { get; set; }
