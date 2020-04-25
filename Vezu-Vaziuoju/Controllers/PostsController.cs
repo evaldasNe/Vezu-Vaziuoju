@@ -16,6 +16,7 @@ namespace Vezu_Vaziuoju.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
+        [Authorize(Roles = "Admin,Driver,Passenger")]
         public ActionResult Index(string addressFrom, string addressTo, DateTime? startTime)
         {
             var posts = (addressFrom != null && addressTo != null && startTime != null) ?
