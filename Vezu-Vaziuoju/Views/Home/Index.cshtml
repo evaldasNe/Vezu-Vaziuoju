@@ -11,11 +11,11 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             @Html.LabelFor(m => m.AddressFrom, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.AddressFrom, new { placeholder = "Kaunas, Riga...", @class = "form-control", id = "txtAutocomplete1" })
+            @Html.TextBoxFor(m => m.AddressFrom, new { placeholder = "Kaunas, Riga...", @class = "form-control", id = "txtAutocomplete" })
         </div>
         <div class="form-group col-md-6">
             @Html.LabelFor(m => m.AddressTo, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.AddressTo, new { placeholder = "Kaunas, Riga...", @class = "form-control", id = "txtAutocomplete2" })
+            @Html.TextBoxFor(m => m.AddressTo, new { autocomplete = "true", placeholder = "Kaunas, Riga...", @class = "form-control" })
         </div>
     </div>
     <div class="form-group col-md-6">
@@ -35,23 +35,14 @@
     <script type="text/javascript">
         google.maps.event.addDomListener(window, 'load', initialize);
         function initialize() {
-            var autocomplete = new google.maps.places.Autocomplete(document.getElementById('txtAutocomplete1'));
+            var autocomplete = new google.maps.places.Autocomplete(document.getElementById('txtAutocomplete'));
             google.maps.event.addListener(autocomplete, 'place_changed', function () {
                 // Get the place details from the autocomplete object.
                 var place = autocomplete.getPlace();
                 var location = "<b>Address</b>: " + place.formatted_address + "<br/>";
                 location += "<b>Latitude</b>: " + place.geometry.location.A + "<br/>";
                 location += "<b>Longitude</b>: " + place.geometry.location.F;
-                document.getElementById('lblResult1').innerHTML = location
-            });
-            var autocomplete = new google.maps.places.Autocomplete(document.getElementById('txtAutocomplete2'));
-            google.maps.event.addListener(autocomplete, 'place_changed', function () {
-                // Get the place details from the autocomplete object.
-                var place = autocomplete.getPlace();
-                var location = "<b>Address</b>: " + place.formatted_address + "<br/>";
-                location += "<b>Latitude</b>: " + place.geometry.location.A + "<br/>";
-                location += "<b>Longitude</b>: " + place.geometry.location.F;
-                document.getElementById('lblResult2').innerHTML = location
+                document.getElementById('lblResult').innerHTML = location
             });
         }
     </script>
