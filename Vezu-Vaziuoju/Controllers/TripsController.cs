@@ -125,6 +125,28 @@ namespace Vezu_Vaziuoju.Controllers
             return RedirectToAction("Index");
         }
 
+        // POST: Trips/Start/5
+        public ActionResult StartTrip(int id)
+        {
+            Trip trip = db.Trips.Find(id);
+
+
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // POST: Trips/End/5
+        public ActionResult EndTrip(int id)
+        {
+            Trip trip = db.Trips.Find(id);
+
+
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

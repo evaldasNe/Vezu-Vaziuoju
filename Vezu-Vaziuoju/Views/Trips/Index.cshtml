@@ -27,6 +27,7 @@
             @Html.DisplayNameFor(model => model.EndedByDriver)
         </th>
         <th></th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -45,6 +46,10 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.EndedByDriver)
+        </td>
+        <td>
+            @Html.ActionLink("Start", "Start", new { id = item.Id }) |
+            @Html.ActionLink("Progress", "Progress", new { id = item.Id }) |
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
