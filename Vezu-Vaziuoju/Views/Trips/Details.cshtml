@@ -1,0 +1,58 @@
+﻿@model Vezu_Vaziuoju.Trip
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Trip</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Post.AddressFrom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Post.AddressFrom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TripState.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TripState.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndedByDriver)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndedByDriver)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

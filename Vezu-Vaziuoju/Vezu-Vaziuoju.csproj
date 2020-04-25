@@ -165,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Controllers\TripsController.cs" />
     <Compile Include="Migrations\202004051829504_Init.cs" />
     <Compile Include="Migrations\202004051829504_Init.Designer.cs">
       <DependentUpon>202004051829504_Init.cs</DependentUpon>
@@ -266,6 +267,11 @@
     <Content Include="Views\Posts\Details.cshtml" />
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
+    <Content Include="Views\Trips\Create.cshtml" />
+    <Content Include="Views\Trips\Delete.cshtml" />
+    <Content Include="Views\Trips\Details.cshtml" />
+    <Content Include="Views\Trips\Edit.cshtml" />
+    <Content Include="Views\Trips\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
