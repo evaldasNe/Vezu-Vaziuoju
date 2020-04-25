@@ -28,9 +28,9 @@ namespace Vezu_Vaziuoju
 
         public int State { get; set; }
 
-        public int AdvertId { get; set; }
+        public int PostId { get; set; }
 
-        public virtual Advert Advert { get; set; }
+        public virtual Post Post { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Rating> Ratings { get; set; }

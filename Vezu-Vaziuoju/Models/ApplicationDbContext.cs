@@ -20,7 +20,7 @@ namespace Vezu_Vaziuoju.Models
         }
 
         public virtual DbSet<Admin> Admins { get; set; }
-        public virtual DbSet<Advert> Adverts { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Bonus> Bonus { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Driver> Drivers { get; set; }
@@ -72,7 +72,7 @@ namespace Vezu_Vaziuoju.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Admin>()
-                .HasMany(e => e.Adverts)
+                .HasMany(e => e.Posts)
                 .WithRequired(e => e.Admin)
                 .HasForeignKey(e => e.AdminId)
                 .WillCascadeOnDelete(false);
@@ -95,38 +95,38 @@ namespace Vezu_Vaziuoju.Models
                 .HasForeignKey(e => e.AdminId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Advert>()
+            modelBuilder.Entity<Post>()
                 .Property(e => e.AddressFrom)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Advert>()
+            modelBuilder.Entity<Post>()
                 .Property(e => e.AddressTo)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Advert>()
+            modelBuilder.Entity<Post>()
                 .Property(e => e.DriverId)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Advert>()
+            modelBuilder.Entity<Post>()
                 .Property(e => e.AdminId)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Advert>()
+            modelBuilder.Entity<Post>()
                 .HasMany(e => e.Comments)
-                .WithRequired(e => e.Advert)
-                .HasForeignKey(e => e.AdvertId)
+                .WithRequired(e => e.Post)
+                .HasForeignKey(e => e.PostId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Advert>()
+            modelBuilder.Entity<Post>()
                 .HasMany(e => e.Tickets)
-                .WithRequired(e => e.Advert)
-                .HasForeignKey(e => e.AdvertId)
+                .WithRequired(e => e.Post)
+                .HasForeignKey(e => e.PostId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Advert>()
+            modelBuilder.Entity<Post>()
                 .HasMany(e => e.Trips)
-                .WithRequired(e => e.Advert)
-                .HasForeignKey(e => e.AdvertId)
+                .WithRequired(e => e.Post)
+                .HasForeignKey(e => e.PostId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Bonus>()
@@ -160,7 +160,7 @@ namespace Vezu_Vaziuoju.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Driver>()
-                .HasMany(e => e.Adverts)
+                .HasMany(e => e.Posts)
                 .WithRequired(e => e.Driver)
                 .HasForeignKey(e => e.DriverId)
                 .WillCascadeOnDelete(false);

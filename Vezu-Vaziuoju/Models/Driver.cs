@@ -13,7 +13,7 @@ namespace Vezu_Vaziuoju
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Driver()
         {
-            Adverts = new HashSet<Advert>();
+            Posts = new HashSet<Post>();
             Comments = new HashSet<Comment>();
         }
 
@@ -25,7 +25,7 @@ namespace Vezu_Vaziuoju
         public string UserId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Advert> Adverts { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }

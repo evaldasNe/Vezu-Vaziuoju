@@ -108,3 +108,4 @@ C:\Users\Evaldas\source\repos\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu-Vaziuoj
 C:\Users\Evaldas\source\repos\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu-Vaziuoju.pdb
 C:\Users\Evaldas\source\repos\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu_Vaziuoju.Migrations.Init.resources
 C:\Users\Evaldas\source\repos\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu-Vaziuoju.csproj.GenerateResource.cache
+C:\Users\Evaldas\source\repos\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu_Vaziuoju.Migrations.ChangedAdvertToPost.resources

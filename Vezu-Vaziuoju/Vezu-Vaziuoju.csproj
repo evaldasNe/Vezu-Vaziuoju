@@ -164,13 +164,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Migrations\202004051829504_Init.cs" />
     <Compile Include="Migrations\202004051829504_Init.Designer.cs">
       <DependentUpon>202004051829504_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004251030585_ChangedAdvertToPost.cs" />
+    <Compile Include="Migrations\202004251030585_ChangedAdvertToPost.Designer.cs">
+      <DependentUpon>202004251030585_ChangedAdvertToPost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
-    <Compile Include="Models\Advert.cs" />
+    <Compile Include="Models\Post.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -256,6 +261,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Posts\Create.cshtml" />
+    <Content Include="Views\Posts\Delete.cshtml" />
+    <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Posts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -276,6 +286,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202004051829504_Init.resx">
       <DependentUpon>202004051829504_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004251030585_ChangedAdvertToPost.resx">
+      <DependentUpon>202004251030585_ChangedAdvertToPost.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

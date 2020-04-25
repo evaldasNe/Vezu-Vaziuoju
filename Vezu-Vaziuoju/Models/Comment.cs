@@ -19,7 +19,7 @@ namespace Vezu_Vaziuoju
         [StringLength(255)]
         public string Text { get; set; }
 
-        public int AdvertId { get; set; }
+        public int PostId { get; set; }
 
         [Required]
         [StringLength(255)]
@@ -29,7 +29,7 @@ namespace Vezu_Vaziuoju
         [StringLength(255)]
         public string PassengerId { get; set; }
 
-        public virtual Advert Advert { get; set; }
+        public virtual Post Post { get; set; }
 
         public virtual Driver Driver { get; set; }
     }

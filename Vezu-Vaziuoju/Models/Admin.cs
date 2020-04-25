@@ -13,7 +13,7 @@ namespace Vezu_Vaziuoju
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Admin()
         {
-            Adverts = new HashSet<Advert>();
+            Posts = new HashSet<Post>();
             Bonus = new HashSet<Bonus>();
             RegistrationVerifications = new HashSet<RegistrationVerification>();
             UserBans = new HashSet<UserBan>();
@@ -29,7 +29,7 @@ namespace Vezu_Vaziuoju
         public virtual ApplicationUser User { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Advert> Adverts { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bonus> Bonus { get; set; }
