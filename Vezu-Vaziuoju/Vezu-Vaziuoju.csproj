@@ -275,6 +275,7 @@
     <Content Include="Views\Trips\Edit.cshtml" />
     <Content Include="Views\Trips\Index.cshtml" />
     <Content Include="Views\Trips\Progress.cshtml" />
+    <Content Include="Views\Posts\BuyTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
