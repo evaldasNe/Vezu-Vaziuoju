@@ -9,12 +9,15 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Vezu_Vaziuoju.Models;
+using System.Data.Entity;
 
 namespace Vezu_Vaziuoju.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -162,6 +165,31 @@ namespace Vezu_Vaziuoju.Controllers
 
                 if (result.Succeeded)
                 {
+                    if (model.UserType == "Driver")
+                    {
+                        UserManager.AddToRole(user.Id, "Driver");
+
+                        Driver driver = new Driver
+                        {
+                            Id = user.Id,
+                            UserId = user.Id,
+                        };
+                        db.Drivers.Add(driver);
+                        db.SaveChanges();
+                    }
+                    else if (model.UserType == "Passenger")
+                    {
+                        UserManager.AddToRole(user.Id, "Passenger");
+
+                        Passenger passenger = new Passenger
+                        {
+                            Id = user.Id,
+                            UserId = user.Id,
+                        };
+                        db.Passengers.Add(passenger);
+                        db.SaveChanges();
+                    }
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
