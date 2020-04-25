@@ -16,9 +16,12 @@ namespace Vezu_Vaziuoju.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
-        public ActionResult Index()
+        public ActionResult Index(string addressFrom, string addressTo, DateTime? startTime)
         {
-            var posts = db.Posts.Include(p => p.Admin).Include(p => p.Driver);
+            var posts = (addressFrom != null && addressTo != null && startTime != null) ?
+                db.Posts.Include(p => p.Admin).Include(p => p.Driver).Where(p => p.AddressFrom == addressFrom).Where(p => p.AddressTo == addressTo).Where(p => p.StartTime == startTime) :
+                db.Posts.Include(p => p.Admin).Include(p => p.Driver);
+
             return View(posts.ToList());
         }
 
