@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.Post.AddressFrom)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TripState.Name)
+            @Html.DisplayName("Keliones busena")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StartTime)
@@ -49,7 +49,9 @@
         </td>
         <td>
             @Html.ActionLink("Start", "Start", new { id = item.Id }) |
-            @Html.ActionLink("Progress", "Progress", new { id = item.Id }) |
+            @if (item.TripState.Id == 2){
+                @Html.ActionLink("Progress", "Progress", new { id = item.Id })
+			}
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
