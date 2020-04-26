@@ -126,7 +126,7 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // POST: Trips/Start/5
-        public ActionResult StartTrip(int id)
+        public ActionResult Start(int id)
         {
             Trip trip = db.Trips.Find(id);
 
@@ -140,13 +140,14 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // POST: Trips/End/5
-        public ActionResult EndTrip(int id)
+        public ActionResult End(int id)
         {
             Trip trip = db.Trips.Find(id);
 
             if (trip.TripState.Name == "Vyksta")
             {
                 trip.State = 3;
+                trip.EndTime = DateTime.Now;
             }
 
             db.SaveChanges();

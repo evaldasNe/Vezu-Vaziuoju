@@ -55,7 +55,10 @@
                 @Html.ActionLink("End", "End", new { id = item.Id })
             </td>
             <td>
-                @Html.ActionLink("Progress", "Progress", new { id = item.Id }) |
+                @if (item.TripState.Id == 2)
+                {
+                    @Html.ActionLink("Progress", "Progress", new { id = item.Id })
+                }
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
@@ -84,7 +87,7 @@
                 $('#busena_switch_start' + id_digit).css("visibility", "hidden");
             }
             if ($(this).html().includes("Nepradeta")) {
-                $(this).css("color", "yellow");
+                $(this).css("color", "orange");
                 var aid = $(this).attr("id");
                 var id_digit = aid.substr(aid.lastIndexOf("_"));
                 $('#busena_switch_end' + id_digit).css("visibility", "hidden");

@@ -22,7 +22,7 @@ namespace Vezu_Vaziuoju
         public DateTime StartTime { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public bool EndedByDriver { get; set; }
 
