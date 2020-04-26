@@ -16,13 +16,18 @@ namespace Vezu_Vaziuoju.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
-        public ActionResult Index()
+        public ActionResult Index(string addressFrom, string addressTo, DateTime? startTime)
         {
-            var posts = db.Posts.Include(p => p.Admin).Include(p => p.Driver);
+            var posts = (addressFrom != null && addressTo != null && startTime != null) ?
+                db.Posts.Include(p => p.Admin).Include(p => p.Driver).Where(p => p.AddressFrom ==
+                addressFrom).Where(p => p.AddressTo == addressTo).Where(p => p.StartTime == startTime) :
+                db.Posts.Include(p => p.Admin).Include(p => p.Driver);
+
             return View(posts.ToList());
         }
 
         // GET: Posts/Details/5
+        [Authorize(Roles = "Admin,Driver,Passenger")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -38,6 +43,7 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize(Roles = "Admin,Driver")]
         public ActionResult Create()
         {
             ViewBag.AdminId = new SelectList(db.Admins, "Id", "UserId");
@@ -115,6 +121,7 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // POST: Posts/Delete/5
+        [Authorize(Roles = "Admin,Driver")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -132,6 +139,52 @@ namespace Vezu_Vaziuoju.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        // GET: Posts/BuyTicket/5
+        [Authorize(Roles = "Passenger")]
+        public ActionResult BuyTicket(int id)
+        {
+            Post post = db.Posts.Find(id);
+            if (post == null)
+            {
+                return HttpNotFound();
+            }
+            else if (post.AvailableSeats <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(post);
+        }
+
+        // POST: Posts/BuyTicketPost/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Passenger")]
+        public ActionResult BuyTicketPost(int id)
+        {
+            Post post = db.Posts.Find(id);
+            var userId = db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id;
+
+            if (ModelState.IsValid)
+            {
+                Ticket ticket = new Ticket
+                {
+                    Id = int.Parse(id.ToString() + post.AvailableSeats.ToString()),
+                    Price = post.TicketPrice,
+                    ValidTill = DateTime.Now.AddHours(5),
+                    IsUsed = false,
+                    PassengerId = userId,
+                    PostId = post.Id,
+                };
+                db.Tickets.Add(ticket);
+                post.AvailableSeats--;
+                db.Entry(post).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("BuyTicket", new { id = id });
         }
     }
 }
