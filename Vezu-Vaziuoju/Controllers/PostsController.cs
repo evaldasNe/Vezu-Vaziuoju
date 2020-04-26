@@ -15,9 +15,8 @@ namespace Vezu_Vaziuoju.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Posts
-        [Authorize(Roles = "Admin,Driver,Passenger")]
-        public ActionResult Index(string addressFrom, string addressTo, DateTime? startTime)
+        // GET: Posts 
+       public ActionResult Index(string addressFrom, string addressTo, DateTime? startTime)
         {
             var posts = (addressFrom != null && addressTo != null && startTime != null) ?
                 db.Posts.Include(p => p.Admin).Include(p => p.Driver).Where(p => p.AddressFrom == addressFrom).Where(p => p.AddressTo == addressTo).Where(p => p.StartTime == startTime) :
@@ -27,6 +26,7 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // GET: Posts/Details/5
+        [Authorize(Roles = "Admin,Driver,Passenger")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -42,6 +42,7 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize(Roles = "Admin,Driver")]
         public ActionResult Create()
         {
             ViewBag.AdminId = new SelectList(db.Admins, "Id", "UserId");
@@ -54,6 +55,7 @@ namespace Vezu_Vaziuoju.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Driver")]
         public ActionResult Create([Bind(Include = "Id,AddressFrom,AddressTo,StartTime,TotalSeats,AvailableSeats,TicketPrice,IsValid,DriverId,AdminId")] Post post)
         {
             if (ModelState.IsValid)
@@ -104,6 +106,7 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Authorize(Roles = "Admin,Driver")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -119,6 +122,7 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // POST: Posts/Delete/5
+        [Authorize(Roles = "Admin,Driver")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
