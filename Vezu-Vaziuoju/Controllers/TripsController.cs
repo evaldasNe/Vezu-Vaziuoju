@@ -130,7 +130,10 @@ namespace Vezu_Vaziuoju.Controllers
         {
             Trip trip = db.Trips.Find(id);
 
-
+            if (trip.TripState.Name == "Nepradeta")
+            {
+                trip.State = 2;
+            }
 
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -141,7 +144,10 @@ namespace Vezu_Vaziuoju.Controllers
         {
             Trip trip = db.Trips.Find(id);
 
-
+            if (trip.TripState.Name == "Vyksta")
+            {
+                trip.State = 3;
+            }
 
             db.SaveChanges();
             return RedirectToAction("Index");
