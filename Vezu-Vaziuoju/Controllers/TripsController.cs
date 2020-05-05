@@ -11,6 +11,7 @@ using Vezu_Vaziuoju.Models;
 
 namespace Vezu_Vaziuoju.Controllers
 {
+    [Authorize(Roles = "Admin,Driver,Passenger")]
     public class TripsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -18,8 +19,33 @@ namespace Vezu_Vaziuoju.Controllers
         // GET: Trips
         public ActionResult Index()
         {
-            var trips = db.Trips.Include(t => t.Post).Include(t => t.TripState);
-            return View(trips.ToList());
+            List<Trip> trips;
+
+            if (User.IsInRole("Passenger"))
+            {
+                var passengerID = db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id;
+
+                trips = db.Trips.
+                    Include(t => t.Post).
+                    Include(t => t.TripState).
+                    ToList().
+                    Where(t => t.Post.Tickets.FirstOrDefault(v => v.PassengerId == passengerID) != null).ToList();
+
+            }
+            else if (User.IsInRole("Driver"))
+            {
+                trips = db.Trips.
+                    Include(t => t.Post).
+                    Include(t => t.TripState).
+                    Where(t => t.Post.Driver.User.Email == User.Identity.Name).
+                    ToList();
+            }
+            else
+            {
+                trips = db.Trips.Include(t => t.Post).Include(t => t.TripState).ToList();
+            }
+            
+            return View(trips);
         }
 
         // GET: Trips/Details/5
@@ -132,6 +158,7 @@ namespace Vezu_Vaziuoju.Controllers
 
             if (trip.TripState.Name == "Nepradeta")
             {
+                trip.StartTime = DateTime.Now;
                 trip.State = 2;
             }
 

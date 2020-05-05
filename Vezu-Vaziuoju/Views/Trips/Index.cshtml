@@ -15,6 +15,9 @@
             @Html.DisplayNameFor(model => model.Post.AddressFrom)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Post.AddressTo)
+        </th>
+        <th>
             @Html.DisplayName("Keliones busena")
         </th>
         <th>
@@ -35,6 +38,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Post.AddressFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Post.AddressTo)
             </td>
             <td id="busena_@Html.DisplayFor(modelItem => item.Id)">
                 @Html.DisplayFor(modelItem => item.TripState.Name)
@@ -64,6 +70,11 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @if (User.IsInRole("Passenger"))
+                {
+                    int ID = item.Post.Tickets.SingleOrDefault(t => t.Passenger.User.Email == User.Identity.Name).Id;
+                    @Html.ActionLink("Ticket Details", "TicketDetails", "Posts", new { id = ID }, new { @class = "btn btn-primary" })               
+                }
             </td>
         </tr>
     }

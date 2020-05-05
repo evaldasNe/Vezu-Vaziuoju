@@ -23,6 +23,11 @@ namespace Vezu_Vaziuoju.Controllers
                 addressFrom).Where(p => p.AddressTo == addressTo).Where(p => p.StartTime == startTime) :
                 db.Posts.Include(p => p.Admin).Include(p => p.Driver);
 
+            if (!User.IsInRole("Admin")) 
+            {
+                posts = posts.Where(p => p.IsValid == true || p.Driver.User.Email == User.Identity.Name);
+            }
+
             return View(posts.ToList());
         }
 
@@ -43,11 +48,9 @@ namespace Vezu_Vaziuoju.Controllers
         }
 
         // GET: Posts/Create
-        [Authorize(Roles = "Admin,Driver")]
+        [Authorize(Roles = "Driver")]
         public ActionResult Create()
         {
-            ViewBag.AdminId = new SelectList(db.Admins, "Id", "UserId");
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "UserId");
             return View();
         }
 
@@ -56,18 +59,34 @@ namespace Vezu_Vaziuoju.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AddressFrom,AddressTo,StartTime,TotalSeats,AvailableSeats,TicketPrice,IsValid,DriverId,AdminId")] Post post)
+        public ActionResult Create(PostViewModel model)
         {
             if (ModelState.IsValid)
             {
+                Post post = new Post
+                {
+                    Id = GenerateId(),
+                    AddressFrom = model.AddressFrom,
+                    AddressTo = model.AddressTo,
+                    StartTime = model.StartTime,
+                    TotalSeats = model.TotalSeats,
+                    AvailableSeats = model.TotalSeats,
+                    TicketPrice = model.TicketPrice,
+                    IsValid = false,
+                    DriverId = db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id
+                };
+
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            return View(model);
+        }
 
-            ViewBag.AdminId = new SelectList(db.Admins, "Id", "UserId", post.AdminId);
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "UserId", post.DriverId);
-            return View(post);
+        private int GenerateId()
+        {
+            byte[] buffer = Guid.NewGuid().ToByteArray();
+            return BitConverter.ToInt16(buffer, 0);
         }
 
         // GET: Posts/Edit/5
@@ -127,6 +146,7 @@ namespace Vezu_Vaziuoju.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Post post = db.Posts.Find(id);
+            db.Tickets.RemoveRange(post.Tickets);
             db.Posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -140,16 +160,20 @@ namespace Vezu_Vaziuoju.Controllers
             }
             base.Dispose(disposing);
         }
+
         // GET: Posts/BuyTicket/5
         [Authorize(Roles = "Passenger")]
         public ActionResult BuyTicket(int id)
         {
             Post post = db.Posts.Find(id);
+            string passengerId = db.Passengers.SingleOrDefault(u => u.User.Email == User.Identity.Name).Id;
+            Ticket ticket = db.Tickets.SingleOrDefault(t => t.PassengerId == passengerId && t.PostId == post.Id);
+
             if (post == null)
             {
                 return HttpNotFound();
             }
-            else if (post.AvailableSeats <= 0)
+            else if (post.AvailableSeats <= 0 || post.IsValid == false || ticket != null)
             {
                 return RedirectToAction("Index");
             }
@@ -169,22 +193,77 @@ namespace Vezu_Vaziuoju.Controllers
             {
                 Ticket ticket = new Ticket
                 {
-                    Id = int.Parse(id.ToString() + post.AvailableSeats.ToString()),
+                    Id = GenerateId(),
                     Price = post.TicketPrice,
-                    ValidTill = DateTime.Now.AddHours(5),
+                    ValidTill = post.StartTime.AddHours(5),
                     IsUsed = false,
                     PassengerId = userId,
                     PostId = post.Id,
                 };
+                bool IsFirstSale = (post.AvailableSeats == post.TotalSeats) ? true : false;
                 db.Tickets.Add(ticket);
                 post.AvailableSeats--;
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Index");
+                if (IsFirstSale)
+                {
+                    CreateTrip(post);
+                }
+
+                return RedirectToAction("TicketDetails", new { id = ticket.Id});
             }
 
             return RedirectToAction("BuyTicket", new { id = id });
+        }
+
+        private void CreateTrip(Post post)
+        {
+            Trip trip = new Trip
+            {
+                Id = GenerateId(),
+                EndedByDriver = false,
+                State = db.TripStates.SingleOrDefault(t => t.Id == 1).Id,
+                PostId = post.Id
+            };
+
+            db.Trips.Add(trip);
+            db.SaveChanges();
+        }
+
+        // GET: Posts/VerifyPost/5
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult VerifyPost(int id)
+        {
+            Post post = db.Posts.Find(id);
+            var adminId = db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id;
+            
+            if (post.IsValid == false)
+            {
+                post.IsValid = true;
+                post.AdminId = adminId;
+                db.Entry(post).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        // GET: Posts/TicketDetails/5
+        [Authorize(Roles = "Passenger")]
+        public ActionResult TicketDetails(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            return View(ticket);
         }
     }
 }

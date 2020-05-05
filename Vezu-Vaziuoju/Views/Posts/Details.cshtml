@@ -83,7 +83,10 @@
         </dd>
 
     </dl>
-    @Html.ActionLink("Buy Ticket", "BuyTicket", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    @if (Model.AvailableSeats > 0 && Model.Tickets.SingleOrDefault(t => t.Passenger.User.Email == User.Identity.Name) == null)
+    {
+        @Html.ActionLink("Buy Ticket", "BuyTicket", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    }
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
