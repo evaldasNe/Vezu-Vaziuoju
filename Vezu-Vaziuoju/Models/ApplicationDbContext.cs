@@ -73,7 +73,7 @@ namespace Vezu_Vaziuoju.Models
 
             modelBuilder.Entity<Admin>()
                 .HasMany(e => e.Posts)
-                .WithRequired(e => e.Admin)
+                .WithOptional(e => e.Admin)
                 .HasForeignKey(e => e.AdminId)
                 .WillCascadeOnDelete(false);
 

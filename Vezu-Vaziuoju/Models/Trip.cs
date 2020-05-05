@@ -5,6 +5,7 @@ namespace Vezu_Vaziuoju
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Runtime.InteropServices;
 
     [Table("Trip")]
     public partial class Trip
@@ -18,10 +19,10 @@ namespace Vezu_Vaziuoju
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime StartTime { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? StartTime { get; set; }
 
-        [Column(TypeName = "date")]
+        [Column(TypeName = "datetime")]
         public DateTime? EndTime { get; set; }
 
         public bool EndedByDriver { get; set; }

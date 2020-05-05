@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Admin.UserId)
+            Verified by
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Driver.UserId)
+            Created by
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AddressFrom)
@@ -44,10 +44,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Admin.UserId)
+            @Html.DisplayFor(modelItem => item.Admin.User.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Driver.UserId)
+            @Html.DisplayFor(modelItem => item.Driver.User.Email)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AddressFrom)
@@ -74,7 +74,14 @@
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
             @Html.ActionLink("Details", "Details", new { id = item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            @Html.ActionLink("Buy Ticket", "BuyTicket", new { id = item.Id }, new { @class = "btn btn-danger" })
+            @if (item.AvailableSeats > 0 && item.Tickets.SingleOrDefault(t => t.Passenger.User.Email == User.Identity.Name) == null)
+            {
+                @Html.ActionLink("Buy Ticket", "BuyTicket", new { id = item.Id }, new { @class = "btn btn-danger" })
+            }
+            @if (User.IsInRole("Admin") && item.IsValid == false)
+            {
+                @Html.ActionLink("Verify", "VerifyPost", new { id = item.Id }, new { @class = "btn btn-danger" })
+            }
         </td>
     </tr>
 }

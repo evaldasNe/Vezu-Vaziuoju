@@ -2,6 +2,7 @@ namespace Vezu_Vaziuoju
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -14,9 +15,11 @@ namespace Vezu_Vaziuoju
 
         public double Price { get; set; }
 
-        [Column(TypeName = "date")]
+        [Column(TypeName = "datetime")]
+        [DisplayName("Valid till")]
         public DateTime ValidTill { get; set; }
 
+        [DisplayName("Is Used")]
         public bool IsUsed { get; set; }
 
         [Required]

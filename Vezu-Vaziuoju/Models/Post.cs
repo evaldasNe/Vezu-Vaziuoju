@@ -31,8 +31,8 @@ namespace Vezu_Vaziuoju
         [DisplayName("Destination Address")]
         public string AddressTo { get; set; }
 
-        [Column(TypeName = "date")]
-        [DataType(DataType.Date)]
+        [Column(TypeName = "datetime")]
+        [DataType(DataType.DateTime)]
         [DisplayName("Departure Time")]
         public DateTime StartTime { get; set; }
 
@@ -48,7 +48,6 @@ namespace Vezu_Vaziuoju
         [StringLength(255)]
         public string DriverId { get; set; }
 
-        [Required]
         [StringLength(255)]
         public string AdminId { get; set; }
 
@@ -64,5 +63,33 @@ namespace Vezu_Vaziuoju
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Trip> Trips { get; set; }
+    }
+
+    public class PostViewModel
+    {
+        [Required]
+        [StringLength(255)]
+        [DisplayName("Departure Address")]
+        public string AddressFrom { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        [DisplayName("Destination Address")]
+        public string AddressTo { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayName("Departure Time")]
+        public DateTime StartTime { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue)]
+        [DisplayName("Total Seats")]
+        public int TotalSeats { get; set; }
+
+        [Required]
+        [Range(0, double.MaxValue)]
+        [DisplayName("Ticket Price")]
+        public double TicketPrice { get; set; }
     }
 }
