@@ -101,9 +101,15 @@ namespace Vezu_Vaziuoju.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AdminId = new SelectList(db.Admins, "Id", "UserId", post.AdminId);
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "UserId", post.DriverId);
-            return View(post);
+            PostViewModel model = new PostViewModel
+            {
+                AddressFrom = post.AddressFrom,
+                AddressTo = post.AddressTo,
+                StartTime = post.StartTime,
+                TotalSeats = post.TotalSeats,
+                TicketPrice = post.TicketPrice
+            };
+            return View(model);
         }
 
         // POST: Posts/Edit/5
@@ -111,17 +117,23 @@ namespace Vezu_Vaziuoju.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AddressFrom,AddressTo,StartTime,TotalSeats,AvailableSeats,TicketPrice,IsValid,DriverId,AdminId")] Post post)
+        public ActionResult Edit(int id, PostViewModel model)
         {
+            Post post = db.Posts.Find(id);
             if (ModelState.IsValid)
             {
+                post.AddressFrom = model.AddressFrom;
+                post.AddressTo = model.AddressTo;
+                post.StartTime = model.StartTime;
+                post.TotalSeats = model.TotalSeats;
+                post.AvailableSeats = model.TotalSeats;
+                post.TicketPrice = model.TicketPrice;
+
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AdminId = new SelectList(db.Admins, "Id", "UserId", post.AdminId);
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "UserId", post.DriverId);
-            return View(post);
+            return View(model);
         }
 
         // GET: Posts/Delete/5

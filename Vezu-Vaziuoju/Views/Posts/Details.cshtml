@@ -11,19 +11,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Admin.UserId)
+            Verified By
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Admin.UserId)
+            @Html.DisplayFor(model => model.Admin.User.Email)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Driver.UserId)
+            Created by
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Driver.UserId)
+            @Html.DisplayFor(model => model.Driver.User.Email)
         </dd>
 
         <dt>
