@@ -445,3 +445,4 @@ C:\Users\Evaldas\Desktop\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu_Vaziuoju.Mig
 C:\Users\Evaldas\Desktop\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu_Vaziuoju.Migrations.ModifyTrip.resources
 C:\Users\Evaldas\Desktop\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu_Vaziuoju.Migrations.updatedfewmodels.resources
 C:\Users\Evaldas\Desktop\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu_Vaziuoju.Migrations.changedPoststartTimetypetodatetime.resources
+C:\Users\Evaldas\Desktop\Vezu-Vaziuoju\Vezu-Vaziuoju\obj\Debug\Vezu_Vaziuoju.Migrations.changedCommentmodel.resources

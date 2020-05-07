@@ -28,6 +28,8 @@ namespace Vezu_Vaziuoju.Models
         public virtual ICollection<Passenger> Passengers { get; set; }
         public virtual ICollection<Driver> Drivers { get; set; }
 
+        public virtual ICollection<Comment> Comments { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RegistrationVerification> RegistrationVerifications { get; set; }
 

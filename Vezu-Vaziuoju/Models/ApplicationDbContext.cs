@@ -66,6 +66,11 @@ namespace Vezu_Vaziuoju.Models
                 .HasForeignKey(e => e.UserId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(e => e.Comments)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Admin>()
                 .Property(e => e.Id)
@@ -148,11 +153,7 @@ namespace Vezu_Vaziuoju.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Comment>()
-                .Property(e => e.DriverId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Comment>()
-                .Property(e => e.PassengerId)
+                .Property(e => e.UserId)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Driver>()
@@ -161,12 +162,6 @@ namespace Vezu_Vaziuoju.Models
 
             modelBuilder.Entity<Driver>()
                 .HasMany(e => e.Posts)
-                .WithRequired(e => e.Driver)
-                .HasForeignKey(e => e.DriverId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Driver>()
-                .HasMany(e => e.Comments)
                 .WithRequired(e => e.Driver)
                 .HasForeignKey(e => e.DriverId)
                 .WillCascadeOnDelete(false);

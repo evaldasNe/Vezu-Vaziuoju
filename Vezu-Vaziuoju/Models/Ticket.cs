@@ -32,4 +32,17 @@ namespace Vezu_Vaziuoju
 
         public virtual Passenger Passenger { get; set; }
     }
+
+    public class TicketViewModel
+    {
+        public Ticket Ticket { get; set; }
+
+        [Range(1, 5)]
+        [DisplayName("Rating")]
+        public double TripRate { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [DisplayName("Low Rating Reason")]
+        public string RatingReasonText { get; set; }
+    }
 }
