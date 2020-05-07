@@ -1,4 +1,4 @@
-﻿@model Vezu_Vaziuoju.Post
+﻿@model Vezu_Vaziuoju.CommentViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -15,7 +15,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Admin.User.Email)
+            @Html.DisplayFor(model => model.Post.Admin.User.Email)
         </dd>
 
         <dt>
@@ -23,72 +23,136 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Driver.User.Email)
+            @Html.DisplayFor(model => model.Post.Driver.User.Email)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AddressFrom)
+            @Html.DisplayNameFor(model => model.Post.AddressFrom)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AddressFrom)
+            @Html.DisplayFor(model => model.Post.AddressFrom)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AddressTo)
+            @Html.DisplayNameFor(model => model.Post.AddressTo)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AddressTo)
+            @Html.DisplayFor(model => model.Post.AddressTo)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.StartTime)
+            @Html.DisplayNameFor(model => model.Post.StartTime)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.StartTime)
+            @Html.DisplayFor(model => model.Post.StartTime)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TotalSeats)
+            @Html.DisplayNameFor(model => model.Post.TotalSeats)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TotalSeats)
+            @Html.DisplayFor(model => model.Post.TotalSeats)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AvailableSeats)
+            @Html.DisplayNameFor(model => model.Post.AvailableSeats)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AvailableSeats)
+            @Html.DisplayFor(model => model.Post.AvailableSeats)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TicketPrice)
+            @Html.DisplayNameFor(model => model.Post.TicketPrice)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TicketPrice)
+            @Html.DisplayFor(model => model.Post.TicketPrice)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsValid)
+            @Html.DisplayNameFor(model => model.Post.IsValid)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IsValid)
+            @Html.DisplayFor(model => model.Post.IsValid)
         </dd>
 
     </dl>
-    @if (Model.AvailableSeats > 0 && Model.Tickets.SingleOrDefault(t => t.Passenger.User.Email == User.Identity.Name) == null)
+    @if (Model.Post.AvailableSeats > 0 && Model.Post.Tickets.SingleOrDefault(t => t.Passenger.User.Email == User.Identity.Name) == null)
     {
-        @Html.ActionLink("Buy Ticket", "BuyTicket", new { id = Model.Id }, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Buy Ticket", "BuyTicket", new { id = Model.Post.Id }, new { @class = "btn btn-danger" })
     }
 </div>
+
+<div class="container">
+    <div class="row">
+        <div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        Recent Comments
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="media-list">
+                        @{ 
+                            var comments = Model.Post.Comments.OrderByDescending(c => c.Date);
+                        } 
+                        @foreach (var item in comments)
+                        {
+                            <li class="media">
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        @item.User.Email
+                                        <br>
+                                        <small>
+                                            commented on @item.Date
+                                        </small>
+                                    </h4>
+                                    <p>
+                                        @item.Text
+                                    </p>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Comment</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Post.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

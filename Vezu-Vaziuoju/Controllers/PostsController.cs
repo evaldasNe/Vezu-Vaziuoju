@@ -40,11 +40,38 @@ namespace Vezu_Vaziuoju.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Post post = db.Posts.Find(id);
+            CommentViewModel model = new CommentViewModel{Post = post};
             if (post == null)
             {
                 return HttpNotFound();
             }
-            return View(post);
+            return View(model);
+        }
+
+        // POST: Posts/Details/5
+        [Authorize(Roles = "Admin,Driver,Passenger")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(int id, CommentViewModel model)
+        {
+            Post post = db.Posts.Find(id);
+
+            if (ModelState.IsValid)
+            {
+                Comment comment = new Comment
+                {
+                    Id = GenerateId(),
+                    Date = DateTime.Now,
+                    Text = model.Text,
+                    PostId = id,
+                    UserId = db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id,
+                };
+
+                db.Comments.Add(comment);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Details", id);
         }
 
         // GET: Posts/Create

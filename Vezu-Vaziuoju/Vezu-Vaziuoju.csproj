@@ -190,6 +190,10 @@
     <Compile Include="Migrations\202005051546330_changed Post startTime type to datetime.Designer.cs">
       <DependentUpon>202005051546330_changed Post startTime type to datetime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005070909592_changed Comment model.cs" />
+    <Compile Include="Migrations\202005070909592_changed Comment model.Designer.cs">
+      <DependentUpon>202005070909592_changed Comment model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Post.cs" />
@@ -325,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005051546330_changed Post startTime type to datetime.resx">
       <DependentUpon>202005051546330_changed Post startTime type to datetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005070909592_changed Comment model.resx">
+      <DependentUpon>202005070909592_changed Comment model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
