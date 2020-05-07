@@ -186,6 +186,7 @@ namespace Vezu_Vaziuoju.Controllers
         {
             Post post = db.Posts.Find(id);
             db.Tickets.RemoveRange(post.Tickets);
+            db.Comments.RemoveRange(post.Comments);
             db.Posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -302,7 +303,54 @@ namespace Vezu_Vaziuoju.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+            TicketViewModel model = new TicketViewModel { Ticket = ticket };
+            Trip trip = ticket.Post.Trips.FirstOrDefault();
+            if (trip != null && ticket.IsUsed == true)
+            {
+                var rate = trip.Ratings.SingleOrDefault(r => r.PassengerId == db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id);
+                model.TripRate = (rate == null) ? 0 : rate.Rate;
+                if (rate != null)
+                {
+                    var reason = db.RatingReasons.SingleOrDefault(r => r.RatingId == rate.Id);
+                    model.RatingReasonText = (reason == null) ? null : reason.Text;
+                }
+            }
+            return View(model);
+        }
+
+        // POST: Posts/TicketDetails/5
+        [Authorize(Roles = "Passenger")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TicketDetails(int id, TicketViewModel model)
+        {
+            Ticket ticket = db.Tickets.Find(id);
+
+            if (ModelState.IsValid && ticket.IsUsed == true)
+            {
+                Rating rating = new Rating
+                {
+                    Id = GenerateId(),
+                    PassengerId = db.Users.SingleOrDefault(u => u.Email == User.Identity.Name).Id,
+                    Rate = model.TripRate,
+                    TripId = db.Trips.SingleOrDefault(t => t.PostId == ticket.PostId).Id
+                };
+
+                if (model.RatingReasonText != null)
+                {
+                    RatingReason ratingReason = new RatingReason
+                    {
+                        Id = GenerateId(),
+                        Text = model.RatingReasonText,
+                        RatingId = rating.Id
+                    };
+                    db.RatingReasons.Add(ratingReason);
+                }
+
+                db.Ratings.Add(rating);
+                db.SaveChanges();
+            }
+            return RedirectToAction("TicketDetails", id);
         }
     }
 }

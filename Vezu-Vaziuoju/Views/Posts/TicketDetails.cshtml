@@ -1,9 +1,14 @@
-﻿@model Vezu_Vaziuoju.Ticket
+﻿@model Vezu_Vaziuoju.TicketViewModel
 
 @{
     ViewBag.Title = "Ticket Details";
 }
-
+<head>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
+</head>
 <h2>Ticket Details</h2>
 
 <div>
@@ -11,27 +16,27 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.Ticket.Price)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Ticket.Price)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ValidTill)
+            @Html.DisplayNameFor(model => model.Ticket.ValidTill)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ValidTill)
+            @Html.DisplayFor(model => model.Ticket.ValidTill)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsUsed)
+            @Html.DisplayNameFor(model => model.Ticket.IsUsed)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IsUsed)
+            @Html.DisplayFor(model => model.Ticket.IsUsed)
         </dd>
 
         <dt>
@@ -39,8 +44,69 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Passenger.User.Email)
+            @Html.DisplayFor(model => model.Ticket.Passenger.User.Email)
         </dd>
     </dl>
 </div>
 
+@if (Model.TripRate == 0 && Model.Ticket.IsUsed == true)
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <br />
+            @Html.LabelFor(m => m.TripRate)
+            @Html.EditorFor(model => model.TripRate, new { htmlAttributes = new { @id = "input-1", @class = "rating rating-loading" } })
+            @Html.ValidationMessageFor(model => model.TripRate, "", new { @class = "text-danger" })
+
+            <div class="container" id="reason" style="display:none">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.LabelFor(m => m.RatingReasonText)
+                @Html.EditorFor(model => model.RatingReasonText, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RatingReasonText, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="submit" value="Submit" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+}
+else if (Model.Ticket.IsUsed == true)
+{
+    <h4>Rating</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TripRate)
+        </dt>
+
+        <dd>
+            <input id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" value=@Model.TripRate disabled="disabled">
+        </dd>
+
+        @if (Model.RatingReasonText != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.RatingReasonText)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RatingReasonText)
+            </dd>
+        }
+    </dl>
+}
+
+<script>
+    $("#input-id").rating();
+    $('form').submit(function (e) {
+        if ($('.filled-stars').width() < 99 && $("#reason").css("display") == "none") {
+            $("#reason").css("display", "block");
+            e.preventDefault();
+        }
+    });
+</script>

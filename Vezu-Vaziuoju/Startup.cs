@@ -4,6 +4,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using Vezu_Vaziuoju.Models;
+using System.Linq;
+using System.Collections;
 
 [assembly: OwinStartupAttribute(typeof(Vezu_Vaziuoju.Startup))]
 namespace Vezu_Vaziuoju
@@ -80,6 +82,18 @@ namespace Vezu_Vaziuoju
                 role.Name = "Passenger";
                 roleManager.Create(role);
 
+            }
+
+            if (context.TripStates.FirstOrDefault() == null)
+            {
+                TripState state1 = new TripState { Id = 1, Name = "Nepradeta" };
+                TripState state2 = new TripState { Id = 2, Name = "Vyksta" };
+                TripState state3 = new TripState { Id = 3, Name = "Baigta" };
+
+                context.TripStates.Add(state1);
+                context.TripStates.Add(state2);
+                context.TripStates.Add(state3);
+                context.SaveChanges();
             }
         }
     }

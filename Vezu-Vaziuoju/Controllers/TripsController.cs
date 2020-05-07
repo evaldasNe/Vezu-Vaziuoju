@@ -160,6 +160,10 @@ namespace Vezu_Vaziuoju.Controllers
             {
                 trip.StartTime = DateTime.Now;
                 trip.State = 2;
+                foreach (var ticket in trip.Post.Tickets)
+                {
+                    ticket.IsUsed = true;
+                }
             }
 
             db.SaveChanges();
