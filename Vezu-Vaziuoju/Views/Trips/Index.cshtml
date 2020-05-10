@@ -55,8 +55,8 @@
                 @Html.DisplayFor(modelItem => item.EndedByDriver)
             </td>
             <td id="busena_switch_start_@Html.DisplayFor(modelItem => item.Id)">
-				@if (this.user.Identity.Name == item.Post.Driver.User.UserName)
-				{@Html.ActionLink("Start", "Start", new { id = item.id })}
+				@if (this.User.Identity.Name == item.Post.Driver.User.UserName)
+				{@Html.ActionLink("Start", "Start", new { id = item.Id })}
             </td>
             <td id="busena_switch_end_@Html.DisplayFor(modelItem => item.Id)">
                 @if (this.User.Identity.Name == item.Post.Driver.User.UserName)
